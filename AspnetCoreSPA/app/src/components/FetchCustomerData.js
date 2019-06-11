@@ -30,16 +30,18 @@ class FetchCustomerData extends Component {
 
     return (
       <div>
-        <h1>Contact List</h1>
-        <label className="mr-2">Search: </label>
-        <input type="text" onChange={this.handleSearchStringInput.bind(this)} />
-        {renderCustomerDataTable(this.props)}
+        <div className="row">
+          <h5 className="m-2 mt-1">Contact List</h5>
+          <input className="form-control w-50 m-1" type="text" placeholder="Search" aria-label="Search" onChange={this.handleSearchStringInput.bind(this)}></input>
+          {renderCustomerDataTable(this.props)}
+
+        </div>
 
         <p className='clearfix text-center'>
           {pageIds.map(p =>
             <button key={p} type="button"
               className={p === this.props.pageNumber ? 'btn btn-outline-primary pull-left bg-primary text-white m-1' : 'btn btn-outline-primary pull-left m-1'}
-              onClick={()=>this.handlePageChange(p)}>
+              onClick={() => this.handlePageChange(p)}>
               {p}
             </button>)}
           {this.props.isLoading ? <span>Loading...</span> : []}
