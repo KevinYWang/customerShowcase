@@ -1,3 +1,5 @@
+using CustomerShowcase.common.Services;
+using GemBox.Spreadsheet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ namespace AspnetCoreSPATemplate
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +28,10 @@ namespace AspnetCoreSPATemplate
             {
                 configuration.RootPath = "app/dist";
             });
+
+
+            // DI setting
+            services.AddTransient<ICustomerDataService>(s=>new CustomerDataService("./SampleData.csv"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
