@@ -1,22 +1,31 @@
 ### Development Notes
 
 1. Assumptions: 
-	a. front: 1) ag-grid is used to show customer list;  2) autocomplet function in search input; 
-	b. back: gembox is used to read csv into memory, assuming gembox with full license to read the whole file; 
-	c. solution structure - four projects: 1) web ; 2) web tests; 3)core; 4)core tests; 
+	a. frontend: 1) reactjs-redux-thunk is used to craet the SPA; 
+				 2) ag-grid is used to show customer list;
+	b. backend: gembox is used to read csv into memory, assuming gembox with full license to read the whole file; 
+	c. solution structure - four projects: 1) CustomerShowcase.web ; 2) CustomerShowcase.web.tests; 3)CustomerShowcase.common; 4)CustomerShowcase.common.tests; 
 	
 2. Additional tools or notes made on this exercise:
-	a. 
+	a. GemBox is used to reading spreadsheet file data; here  the trial version is used and it only reads 150 rows;
+	b. ag-grid is used to render the customer list; 
+	
 3. Design decisions should also be commented on:
 	a. 
 
 4. Additional nice to haves or features that you might suggest but do not have time to complete:
-	a. 
+	a. Use Entity Framework to store and possible CRUD operations for the data; 
+	b. Front end tests should be added; 
 
 
 
 ### Summary of breakdown
-• Preparation: 1 hour ---  9:00 am - 10:00am
-• Coding: 5 hours (including tests)
-• Styling 30 minutes
-• Building and testing 30 minutes
+• Preparation: 1 hour ---  9:00 - 10:00
+• Coding: 6 hours (including tests)
+	1) backend common and common.tests :  2 hours --- 10:00 - 12:00
+	2) backend CustomerController(CustomerShowcase.web) and its testing(CustomerShowcase.web.tests): 0.5 hour--- 12:45 - 13:15
+	3) frontend SPA:  4 hours --- 13:15 - 17:15   
+• Styling: 1 hour --- 19:00 - 20:00
+• Document: 30 minutes --- 20:00 - 20:30
+
+Total: 8.5 hours;

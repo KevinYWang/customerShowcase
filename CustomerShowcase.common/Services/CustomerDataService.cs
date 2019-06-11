@@ -9,7 +9,7 @@ namespace CustomerShowcase.common.Services
 {
     public interface ICustomerDataService
     {
-        List<Customer> GetCustomerByQueryString(string searchStr);
+        List<Customer> GetCustomerByQueryString(string searchStr, int pageNumber, int pageSize, out int total);
         List<Customer> GetCustomerDataFromCsvFile(string dataFilePath);
     }
 
@@ -22,15 +22,20 @@ namespace CustomerShowcase.common.Services
             customerRepository = GetCustomerDataFromCsvFile(dataFilePath);
         }
 
-        public List<Customer> GetCustomerByQueryString(string searchStr)
+        public List<Customer> GetCustomerByQueryString(string searchStr, int pageNumber, int pageSize, out int total)
         {
             List<Customer> customerList = new List<Customer>();
+
+
             if (string.IsNullOrEmpty(searchStr) || string.IsNullOrWhiteSpace(searchStr))
             {
+                total = customerRepository.Count;
                 return customerRepository
                     .OrderBy(x => x.FirstName)
                     .ThenBy(y => y.LastName)
                     .ThenBy(z => z.Email)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
                     .ToList();
             }
 
@@ -44,14 +49,16 @@ namespace CustomerShowcase.common.Services
                 .Concat(lastNameList)
                 .Concat(phoneList)
                 .Concat(emailList)
-                .Distinct()
+                .Distinct();
+
+            total = combinedList.Count();
+            return combinedList
                 .OrderBy(x => x.FirstName)
                 .ThenBy(y => y.LastName)
                 .ThenBy(z => z.Email)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
-
-
-            return combinedList;
         }
 
         public List<Customer> GetCustomerDataFromCsvFile(string dataFilePath)

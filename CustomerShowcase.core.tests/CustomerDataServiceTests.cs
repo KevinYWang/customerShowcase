@@ -41,10 +41,14 @@ namespace CustomerShowcase.common.tests
         {
             var normalFilePath = Path.GetFullPath("./TestData/SampleData.csv");
             var customerDataService = new CustomerDataService(normalFilePath);
-            Assert.True(customerDataService.GetCustomerByQueryString(string.Empty).Count>30);
+            var result = customerDataService.GetCustomerByQueryString(string.Empty, 1, 50, out var total).Count;
+            Assert.True(result > 30);
+            Assert.True(total >= result);
 
             var searchStr = "rtabar@hotmail";
-            Assert.True(customerDataService.GetCustomerByQueryString(searchStr).Count ==1);
+            result = customerDataService.GetCustomerByQueryString(searchStr, 1, 50, out total).Count;
+            Assert.True(result == 1);
+            Assert.True(total == 1);
         }
     }
 }

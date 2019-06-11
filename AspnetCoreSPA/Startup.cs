@@ -1,8 +1,10 @@
+using System.IO;
 using CustomerShowcase.common.Services;
 using GemBox.Spreadsheet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +33,8 @@ namespace AspnetCoreSPATemplate
 
 
             // DI setting
-            services.AddTransient<ICustomerDataService>(s=>new CustomerDataService("./SampleData.csv"));
+            var filePath = Path.GetFullPath("./SampleData.csv");
+            services.AddTransient<ICustomerDataService>(s=>new CustomerDataService(filePath));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +67,7 @@ namespace AspnetCoreSPATemplate
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
         }
