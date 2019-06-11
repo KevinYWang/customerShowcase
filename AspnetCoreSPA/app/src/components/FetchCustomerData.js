@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { actionCreators } from '../store/customerDataActionsAndReducers';
 
 class FetchCustomerData extends Component {
@@ -9,29 +8,43 @@ class FetchCustomerData extends Component {
     this.ensureDataFetched('');
   }
 
-  // componentDidUpdate() {
-  //   // This method is called when the route parameters change
-  //   debugger;
-  //   this.ensureDataFetched();
-  // }
-
-  ensureDataFetched(searchString='') {
-    debugger; 
-    this.props.requestCustomerData(searchString);
+  ensureDataFetched(searchString = '', pageNumber = 1) {
+    this.props.requestCustomerData(searchString, pageNumber);
   }
 
-  handleSearchStringInput(event){
-    this.ensureDataFetched(event.target.value);
+  handleSearchStringInput(event) {
+    this.ensureDataFetched(event.target.value, this.props.pageNumber);
   }
+
+  handlePageChange(pageNumber) {
+    this.ensureDataFetched(this.props.searchString, pageNumber);
+  }
+
+
 
   render() {
+    let pageIds = [];
+    for (let i = 1; i <= Math.ceil(this.props.pageTotal / this.props.pageSize); i++) {
+      pageIds.push(i);
+    }
+
     return (
       <div>
         <h1>Contact List</h1>
         <label className="mr-2">Search: </label>
-        <input type="text" onChange={this.handleSearchStringInput.bind(this)} /> 
+        <input type="text" onChange={this.handleSearchStringInput.bind(this)} />
         {renderCustomerDataTable(this.props)}
-        {/* {renderPagination(this.props)} */}
+
+        <p className='clearfix text-center'>
+          {pageIds.map(p =>
+            <button key={p} type="button"
+              className={p === this.props.pageNumber ? 'btn btn-outline-primary pull-left bg-primary text-white m-1' : 'btn btn-outline-primary pull-left m-1'}
+              onClick={()=>this.handlePageChange(p)}>
+              {p}
+            </button>)}
+          {this.props.isLoading ? <span>Loading...</span> : []}
+        </p>
+
       </div>
     );
   }
@@ -62,16 +75,6 @@ function renderCustomerDataTable(props) {
   );
 }
 
-// function renderPagination(props) {
-//   const prevStartDateIndex = (props.startDateIndex || 0) - 5;
-//   const nextStartDateIndex = (props.startDateIndex || 0) + 5;
-
-//   return <p className='clearfix text-center'>
-//     <Link className='btn btn-default pull-left' to={`/fetch-data/${prevStartDateIndex}`}>Previous</Link>
-//     <Link className='btn btn-default pull-right' to={`/fetch-data/${nextStartDateIndex}`}>Next</Link>
-//     {props.isLoading ? <span>Loading...</span> : []}
-//   </p>;
-// }
 
 export default connect(
   state => state.customerData,
